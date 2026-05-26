@@ -230,13 +230,12 @@
     </div>
     <select id="filter-cat">
       <option value="">Todas as categorias</option>
-      <option value="parque">🌳 Parque</option>
       <option value="restaurante">🍽️ Restaurante</option>
-      <option value="café">☕ Café</option>
-      <option value="museu">🏛️ Museu</option>
-      <option value="trilha">🥾 Trilha</option>
-      <option value="bar">🍺 Bar</option>
-      <option value="cultura">🎭 Cultura</option>
+      <option value="cafeteria">☕ Cafeteria & doceria</option>
+      <option value="emporio">🛒 Empório & mercearia</option>
+      <option value="loja">🛍️ Loja & compras</option>
+      <option value="cultura">🎭 Cultura & entret.</option>
+      <option value="natureza">🌿 Natureza & ar livre</option>
       <option value="outro">📍 Outro</option>
     </select>
     <select id="filter-status">
@@ -273,13 +272,12 @@
     <div class="field">
       <label for="f-cat">Categoria</label>
       <select id="f-cat">
-        <option value="parque">🌳 Parque</option>
         <option value="restaurante">🍽️ Restaurante</option>
-        <option value="café">☕ Café</option>
-        <option value="museu">🏛️ Museu</option>
-        <option value="trilha">🥾 Trilha</option>
-        <option value="bar">🍺 Bar</option>
-        <option value="cultura">🎭 Cultura</option>
+        <option value="cafeteria">☕ Cafeteria & doceria</option>
+        <option value="emporio">🛒 Empório & mercearia</option>
+        <option value="loja">🛍️ Loja & compras</option>
+        <option value="cultura">🎭 Cultura & entret.</option>
+        <option value="natureza">🌿 Natureza & ar livre</option>
         <option value="outro">📍 Outro</option>
       </select>
     </div>
@@ -304,8 +302,6 @@
 //  Substitua o objeto abaixo pela config do seu projeto.
 //  Veja as instruções em COMO-CONFIGURAR.md
 // ============================================================
-
-  // Your web app's Firebase configuration
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDip4xBKtTJ85S64u3YB5OQU9I5wCn2-so",
   authDomain: "meus-lugares-jundiai.firebaseapp.com",
@@ -315,18 +311,16 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "642006309748",
   appId: "1:642006309748:web:269f9f5a61c968c00d2a21"
 };
-
-// Initialize Firebase
+// ============================================================
 
 const CATS = {
-  parque:      { label: "Parque",      emoji: "🌳", bg: "#dcfce7", color: "#15803d" },
-  restaurante: { label: "Restaurante", emoji: "🍽️", bg: "#fef9c3", color: "#854d0e" },
-  café:        { label: "Café",        emoji: "☕", bg: "#ffedd5", color: "#9a3412" },
-  museu:       { label: "Museu",       emoji: "🏛️", bg: "#dbeafe", color: "#1e40af" },
-  trilha:      { label: "Trilha",      emoji: "🥾", bg: "#d1fae5", color: "#065f46" },
-  bar:         { label: "Bar",         emoji: "🍺", bg: "#ede9fe", color: "#4c1d95" },
-  cultura:     { label: "Cultura",     emoji: "🎭", bg: "#fce7f3", color: "#831843" },
-  outro:       { label: "Outro",       emoji: "📍", bg: "#f4f4f5", color: "#3f3f46" },
+  restaurante: { label: "Restaurante",           emoji: "🍽️", bg: "#fef9c3", color: "#854d0e" },
+  cafeteria:   { label: "Cafeteria & doceria",   emoji: "☕", bg: "#ffedd5", color: "#9a3412" },
+  emporio:     { label: "Empório & mercearia",   emoji: "🛒", bg: "#dcfce7", color: "#15803d" },
+  loja:        { label: "Loja & compras",        emoji: "🛍️", bg: "#ede9fe", color: "#4c1d95" },
+  cultura:     { label: "Cultura & entret.",     emoji: "🎭", bg: "#fce7f3", color: "#831843" },
+  natureza:    { label: "Natureza & ar livre",   emoji: "🌿", bg: "#d1fae5", color: "#065f46" },
+  outro:       { label: "Outro",                 emoji: "📍", bg: "#f4f4f5", color: "#3f3f46" },
 };
 
 let db = null;
@@ -452,7 +446,7 @@ function openModal(id) {
   const p = id ? places[id] : null;
   document.getElementById("modal-title").textContent = p ? "Editar lugar" : "Novo lugar";
   document.getElementById("f-name").value = p ? (p.name || "") : "";
-  document.getElementById("f-city").value = p ? (p.city || "") : "";
+  document.getElementById("f-city").value = p ? (p.city || "") : "Jundiaí";
   document.getElementById("f-cat").value = p ? (p.category || "outro") : "restaurante";
   document.getElementById("f-note").value = p ? (p.note || "") : "";
   document.getElementById("modal-footer").innerHTML = `
