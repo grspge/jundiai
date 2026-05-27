@@ -9,190 +9,116 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #ffffff;
-      --bg-2: #f4f4f5;
-      --bg-3: #fafafa;
-      --text: #18181b;
-      --text-2: #52525b;
-      --text-3: #a1a1aa;
-      --border: #e4e4e7;
-      --border-2: #d4d4d8;
-      --green: #16a34a;
-      --green-light: #dcfce7;
-      --green-text: #15803d;
-      --radius: 10px;
-      --radius-sm: 6px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+      --bg:#ffffff; --bg-2:#f4f4f5; --bg-3:#fafafa;
+      --text:#18181b; --text-2:#52525b; --text-3:#a1a1aa;
+      --border:#e4e4e7; --border-2:#d4d4d8;
+      --green:#16a34a; --green-text:#15803d;
+      --radius:10px; --radius-sm:6px;
+      --shadow:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
     }
+    body { font-family:'Inter',sans-serif; background:var(--bg-3); color:var(--text); min-height:100vh; font-size:14px; }
+    .container { max-width:880px; margin:0 auto; padding:0 16px 80px; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-3);
-      color: var(--text);
-      min-height: 100vh;
-      font-size: 14px;
-    }
+    .header { padding:28px 0 20px; border-bottom:1px solid var(--border); margin-bottom:24px; }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .header h1 { font-size:20px; font-weight:600; display:flex; align-items:center; gap:8px; }
+    .header h1 i { font-size:22px; color:var(--green); }
+    .header p { font-size:13px; color:var(--text-3); margin-top:3px; }
+    .sync-badge { font-size:12px; color:var(--text-3); display:flex; align-items:center; gap:5px; background:var(--bg-2); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
+    .sync-dot { width:7px; height:7px; border-radius:50%; background:#d4d4d8; flex-shrink:0; }
+    .sync-dot.connected { background:var(--green); }
 
-    /* Layout */
-    .container { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+    .stat { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; text-align:center; }
+    .stat-num { font-size:26px; font-weight:600; line-height:1; }
+    .stat-label { font-size:11px; color:var(--text-3); margin-top:5px; }
 
-    /* Header */
-    .header {
-      padding: 28px 0 20px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
-    }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .header h1 { font-size: 20px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .header h1 i { font-size: 22px; color: var(--green); }
-    .header p { font-size: 13px; color: var(--text-3); margin-top: 3px; }
-    .sync-badge {
-      font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 5px;
-      background: var(--bg-2); border: 1px solid var(--border); border-radius: 20px;
-      padding: 4px 10px;
-    }
-    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #d4d4d8; flex-shrink: 0; }
-    .sync-dot.connected { background: var(--green); }
+    .toolbar { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+    .search-wrap { position:relative; flex:1; min-width:160px; }
+    .search-wrap i { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text-3); font-size:16px; pointer-events:none; }
+    .toolbar input[type=text] { width:100%; height:38px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--bg); color:var(--text); padding:0 10px 0 34px; font-size:14px; font-family:'Inter',sans-serif; outline:none; }
+    .toolbar select { height:38px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--bg); color:var(--text); padding:0 10px; font-size:13px; font-family:'Inter',sans-serif; cursor:pointer; outline:none; }
+    .add-btn { height:38px; padding:0 16px; border-radius:var(--radius-sm); background:var(--text); color:var(--bg); border:none; font-size:13px; font-weight:500; font-family:'Inter',sans-serif; cursor:pointer; display:flex; align-items:center; gap:6px; white-space:nowrap; transition:opacity .15s; }
+    .add-btn:hover { opacity:.85; }
 
-    /* Stats */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-    .stat {
-      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 14px 16px; text-align: center;
-    }
-    .stat-num { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
-    .stat-label { font-size: 11px; color: var(--text-3); margin-top: 5px; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:12px; }
+    .card { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; transition:border-color .15s,box-shadow .15s; overflow:hidden; }
+    .card:hover { border-color:var(--border-2); box-shadow:var(--shadow); }
+    .card.visited { border-left:3px solid var(--green); }
+    .card-body { padding:14px 16px; }
+    .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+    .card-name { font-size:15px; font-weight:500; line-height:1.35; flex:1; }
+    .card-actions { display:flex; gap:4px; flex-shrink:0; margin-top:-2px; }
+    .icon-btn { background:none; border:none; cursor:pointer; color:var(--text-3); font-size:17px; padding:3px; line-height:1; display:flex; align-items:center; border-radius:4px; transition:color .12s,background .12s; }
+    .icon-btn:hover { color:var(--text); background:var(--bg-2); }
+    .icon-btn.visited-btn.active { color:var(--green); }
+    .card-meta { display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap; }
+    .tag { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:500; padding:3px 8px; border-radius:20px; white-space:nowrap; }
+    .card-city { font-size:12px; color:var(--text-3); display:flex; align-items:center; gap:3px; }
+    .card-note { font-size:13px; color:var(--text-2); margin-top:10px; line-height:1.55; border-top:1px solid var(--border); padding-top:10px; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); min-height:30px; }
+    .card-visits { font-size:12px; color:var(--text-3); display:flex; align-items:center; gap:4px; flex:1; }
+    .card-links { display:flex; gap:5px; flex-shrink:0; }
+    .card-link { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:6px; background:var(--bg-2); border:1px solid var(--border); color:var(--text-2); font-size:15px; text-decoration:none; transition:background .12s; }
+    .card-link:hover { background:var(--border); }
+    .empty { grid-column:1/-1; text-align:center; padding:56px 20px; color:var(--text-3); display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .empty i { font-size:40px; opacity:.4; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-    .search-wrap { position: relative; flex: 1; min-width: 160px; }
-    .search-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 16px; pointer-events: none; }
-    .toolbar input {
-      width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border);
-      background: var(--bg); color: var(--text); padding: 0 10px 0 34px; font-size: 14px;
-      font-family: 'Inter', sans-serif; outline: none; transition: border-color .15s;
-    }
-    .toolbar input:focus { border-color: var(--border-2); }
-    .toolbar select {
-      height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border);
-      background: var(--bg); color: var(--text); padding: 0 10px; font-size: 13px;
-      font-family: 'Inter', sans-serif; cursor: pointer; outline: none;
-    }
-    .add-btn {
-      height: 38px; padding: 0 16px; border-radius: var(--radius-sm);
-      background: var(--text); color: var(--bg); border: none;
-      font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif;
-      cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;
-      transition: opacity .15s;
-    }
-    .add-btn:hover { opacity: .85; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); display:flex; align-items:flex-start; justify-content:center; z-index:100; padding:20px 16px 40px; overflow-y:auto; animation:fadeIn .15s; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .modal { background:var(--bg); border-radius:14px; border:1px solid var(--border); padding:24px; width:100%; max-width:460px; box-shadow:0 20px 60px rgba(0,0,0,.15); animation:slideUp .2s ease; margin:auto 0; }
+    @keyframes slideUp { from{transform:translateY(12px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .modal-title { font-size:16px; font-weight:600; }
+    .modal-close { background:none; border:none; cursor:pointer; color:var(--text-3); font-size:20px; padding:2px; line-height:1; }
+    .modal-close:hover { color:var(--text); }
+    .modal-section { margin-bottom:18px; }
+    .modal-section-title { font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+    .field { margin-bottom:12px; }
+    .field label { display:block; font-size:12px; font-weight:500; color:var(--text-2); margin-bottom:5px; }
+    .field input,.field select,.field textarea { width:100%; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); font-size:14px; padding:8px 10px; font-family:'Inter',sans-serif; outline:none; transition:border-color .15s; }
+    .field input:focus,.field select:focus,.field textarea:focus { border-color:var(--border-2); }
+    .field textarea { height:72px; resize:vertical; }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
-    /* Cards */
-    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-    .card {
-      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 16px; cursor: pointer; transition: border-color .15s, box-shadow .15s;
-      position: relative;
-    }
-    .card:hover { border-color: var(--border-2); box-shadow: var(--shadow); }
-    .card.visited { border-left: 3px solid var(--green); }
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .card-name { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.35; flex: 1; }
-    .card-actions { display: flex; gap: 4px; flex-shrink: 0; margin-top: -2px; }
-    .icon-btn {
-      background: none; border: none; cursor: pointer; color: var(--text-3);
-      font-size: 17px; padding: 3px; line-height: 1; display: flex; align-items: center;
-      border-radius: 4px; transition: color .12s, background .12s;
-    }
-    .icon-btn:hover { color: var(--text); background: var(--bg-2); }
-    .icon-btn.visited-btn.active { color: var(--green); }
-    .card-meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .tag {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 11px; font-weight: 500; padding: 3px 8px;
-      border-radius: 20px; white-space: nowrap;
-    }
-    .card-city { font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 3px; }
-    .card-city i { font-size: 13px; }
-    .card-note {
-      font-size: 13px; color: var(--text-2); margin-top: 10px; line-height: 1.55;
-      border-top: 1px solid var(--border); padding-top: 10px;
-    }
-    .visited-label {
-      font-size: 11px; color: var(--green-text); font-weight: 500;
-      display: flex; align-items: center; gap: 3px; margin-top: 8px;
-    }
+    .link-row { display:flex; gap:6px; margin-bottom:6px; align-items:center; }
+    .link-row input { flex:1; }
+    .link-icon { font-size:16px; width:22px; text-align:center; flex-shrink:0; color:var(--text-3); }
+    .btn-add-link { background:none; border:1px dashed var(--border-2); border-radius:var(--radius-sm); color:var(--text-3); font-size:12px; font-family:'Inter',sans-serif; padding:6px 12px; cursor:pointer; width:100%; text-align:center; transition:border-color .15s,color .15s; }
+    .btn-add-link:hover { border-color:var(--text-3); color:var(--text-2); }
 
-    /* Empty & Loading */
-    .empty {
-      grid-column: 1 / -1; text-align: center; padding: 56px 20px;
-      color: var(--text-3); display: flex; flex-direction: column; align-items: center; gap: 10px;
-    }
-    .empty i { font-size: 40px; opacity: .4; }
-    .empty p { font-size: 14px; }
-    .loading { text-align: center; padding: 48px; color: var(--text-3); font-size: 14px; }
+    .visit-entry { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:var(--bg-2); border-radius:var(--radius-sm); margin-bottom:5px; }
+    .visit-entry span { font-size:13px; color:var(--text-2); display:flex; align-items:center; gap:6px; }
+    .visit-entry button { background:none; border:none; cursor:pointer; color:var(--text-3); font-size:15px; line-height:1; padding:2px; }
+    .visit-entry button:hover { color:#dc2626; }
+    .add-visit-row { display:flex; gap:6px; margin-top:6px; }
+    .add-visit-row input[type=date] { flex:1; height:34px; font-size:13px; }
+    .btn-sm { height:34px; padding:0 12px; border-radius:var(--radius-sm); font-size:12px; font-weight:500; font-family:'Inter',sans-serif; cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--text); white-space:nowrap; }
+    .btn-sm:hover { background:var(--bg-2); }
+    .no-visits { font-size:13px; color:var(--text-3); margin-bottom:8px; }
 
-    /* Modal */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.4);
-      display: flex; align-items: center; justify-content: center; z-index: 100;
-      padding: 16px; animation: fadeIn .15s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .modal {
-      background: var(--bg); border-radius: 14px; border: 1px solid var(--border);
-      padding: 24px; width: 100%; max-width: 440px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.15);
-      animation: slideUp .2s ease;
-    }
-    @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 16px; font-weight: 600; }
-    .modal-close { background: none; border: none; cursor: pointer; color: var(--text-3); font-size: 20px; padding: 2px; line-height: 1; }
-    .modal-close:hover { color: var(--text); }
-    .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 12px; font-weight: 500; color: var(--text-2); margin-bottom: 5px; }
-    .field input, .field select, .field textarea {
-      width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
-      background: var(--bg); color: var(--text); font-size: 14px;
-      padding: 8px 10px; font-family: 'Inter', sans-serif; outline: none; transition: border-color .15s;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--border-2); }
-    .field textarea { height: 80px; resize: vertical; }
-    .modal-footer { display: flex; gap: 8px; margin-top: 20px; }
-    .btn { height: 38px; padding: 0 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity .15s; border: 1px solid var(--border); }
-    .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); margin-left: auto; }
-    .btn-primary:hover { opacity: .85; }
-    .btn-ghost { background: none; color: var(--text-2); }
-    .btn-ghost:hover { background: var(--bg-2); }
-    .btn-danger { background: none; color: #dc2626; border-color: #fca5a5; margin-right: auto; }
-    .btn-danger:hover { background: #fef2f2; }
+    .modal-footer { display:flex; gap:8px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); }
+    .btn { height:38px; padding:0 16px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; font-family:'Inter',sans-serif; cursor:pointer; border:1px solid var(--border); transition:opacity .15s; }
+    .btn-primary { background:var(--text); color:var(--bg); border-color:var(--text); margin-left:auto; }
+    .btn-primary:hover { opacity:.85; }
+    .btn-primary:disabled { opacity:.5; cursor:not-allowed; }
+    .btn-ghost { background:none; color:var(--text-2); }
+    .btn-ghost:hover { background:var(--bg-2); }
+    .btn-danger { background:none; color:#dc2626; border-color:#fca5a5; margin-right:auto; }
+    .btn-danger:hover { background:#fef2f2; }
 
-    /* Setup banner */
-    .setup-banner {
-      background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius);
-      padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;
-    }
-    .setup-banner i { font-size: 20px; color: #d97706; flex-shrink: 0; margin-top: 1px; }
-    .setup-banner p { font-size: 13px; line-height: 1.55; color: #78350f; }
-    .setup-banner strong { font-weight: 600; }
-    .setup-banner code { background: #fef3c7; border-radius: 3px; padding: 1px 5px; font-family: monospace; font-size: 12px; }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .toolbar { flex-direction: column; }
-      .toolbar select { width: 100%; }
-      .header-inner { flex-direction: column; align-items: flex-start; }
+    @media(max-width:600px) {
+      .stats { grid-template-columns:repeat(2,1fr); }
+      .toolbar { flex-direction:column; }
+      .toolbar select { width:100%; }
+      .header-inner { flex-direction:column; align-items:flex-start; }
+      .field-row { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
-
 <div class="container">
-
   <div class="header">
     <div class="header-inner">
       <div>
@@ -206,16 +132,6 @@
     </div>
   </div>
 
-  <div id="setup-banner" class="setup-banner" style="display:none">
-    <i class="ti ti-alert-triangle"></i>
-    <p>
-      <strong>Configure o Firebase para ativar a sincronização.</strong><br>
-      Abra o arquivo <code>index.html</code>, encontre o trecho <code>COLE_AQUI_SUA_CONFIG</code>
-      e substitua pelo objeto de configuração do seu projeto Firebase.
-      Veja as instruções no arquivo <code>COMO-CONFIGURAR.md</code>.
-    </p>
-  </div>
-
   <div class="stats" id="stats">
     <div class="stat"><div class="stat-num">—</div><div class="stat-label">lugares salvos</div></div>
     <div class="stat"><div class="stat-num">—</div><div class="stat-label">já visitei</div></div>
@@ -225,7 +141,7 @@
 
   <div class="toolbar">
     <div class="search-wrap">
-      <i class="ti ti-search" aria-hidden="true"></i>
+      <i class="ti ti-search"></i>
       <input type="text" id="search" placeholder="Buscar lugar, cidade...">
     </div>
     <select id="filter-cat">
@@ -244,63 +160,82 @@
       <option value="visited">Já visitei</option>
     </select>
     <button class="add-btn" onclick="openModal()">
-      <i class="ti ti-plus" aria-hidden="true"></i> Adicionar
+      <i class="ti ti-plus"></i> Adicionar
     </button>
   </div>
 
   <div class="cards" id="cards">
-    <div class="loading">Carregando...</div>
+    <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-3)">Carregando...</div>
   </div>
-
 </div>
 
 <!-- Modal -->
 <div id="modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title" id="modal-title">Novo lugar</span>
-      <button class="modal-close" onclick="closeModal()" aria-label="Fechar"><i class="ti ti-x"></i></button>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
     </div>
-    <div class="field">
-      <label for="f-name">Nome do lugar *</label>
-      <input id="f-name" type="text" placeholder="Ex: Parque da Cidade, Café do João...">
+
+    <div class="modal-section">
+      <div class="modal-section-title">Informações</div>
+      <div class="field">
+        <label>Nome do lugar *</label>
+        <input id="f-name" type="text" placeholder="Ex: Parque da Cidade, Café do João...">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Cidade / bairro</label>
+          <input id="f-city" type="text" placeholder="Jundiaí">
+        </div>
+        <div class="field">
+          <label>Categoria</label>
+          <select id="f-cat">
+            <option value="restaurante">🍽️ Restaurante</option>
+            <option value="cafeteria">☕ Cafeteria & doceria</option>
+            <option value="emporio">🛒 Empório & mercearia</option>
+            <option value="loja">🛍️ Loja & compras</option>
+            <option value="cultura">🎭 Cultura & entret.</option>
+            <option value="natureza">🌿 Natureza & ar livre</option>
+            <option value="outro">📍 Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observações / dicas / como chegar</label>
+        <textarea id="f-note" placeholder="Qualquer nota útil..."></textarea>
+      </div>
     </div>
-    <div class="field">
-      <label for="f-city">Cidade / bairro</label>
-      <input id="f-city" type="text" placeholder="Ex: Jundiaí, Atibaia, Louveira, Itatiba...">
+
+    <div class="modal-section">
+      <div class="modal-section-title">Links</div>
+      <div id="links-list"></div>
+      <button class="btn-add-link" id="btn-add-link" onclick="addLinkField()">
+        <i class="ti ti-plus" style="font-size:13px;vertical-align:-1px;margin-right:3px"></i> Adicionar link
+      </button>
     </div>
-    <div class="field">
-      <label for="f-cat">Categoria</label>
-      <select id="f-cat">
-        <option value="restaurante">🍽️ Restaurante</option>
-        <option value="cafeteria">☕ Cafeteria & doceria</option>
-        <option value="emporio">🛒 Empório & mercearia</option>
-        <option value="loja">🛍️ Loja & compras</option>
-        <option value="cultura">🎭 Cultura & entret.</option>
-        <option value="natureza">🌿 Natureza & ar livre</option>
-        <option value="outro">📍 Outro</option>
-      </select>
+
+    <div class="modal-section" id="visits-section" style="display:none">
+      <div class="modal-section-title">Histórico de visitas</div>
+      <div id="visits-list"></div>
+      <div class="add-visit-row">
+        <input type="date" id="f-visit-date">
+        <button class="btn-sm" onclick="addVisitToForm()">+ Registrar</button>
+      </div>
     </div>
-    <div class="field">
-      <label for="f-note">Observações / dicas / como chegar</label>
-      <textarea id="f-note" placeholder="Qualquer nota útil..."></textarea>
-    </div>
+
     <div class="modal-footer" id="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="savePlace()">Salvar</button>
+      <button class="btn btn-primary" id="save-btn" onclick="savePlace()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
 // ============================================================
-//  ⚙️  CONFIGURAÇÃO FIREBASE
-//  Substitua o objeto abaixo pela config do seu projeto.
-//  Veja as instruções em COMO-CONFIGURAR.md
+//  CONFIGURAÇÃO FIREBASE
 // ============================================================
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDip4xBKtTJ85S64u3YB5OQU9I5wCn2-so",
@@ -314,54 +249,52 @@ const FIREBASE_CONFIG = {
 // ============================================================
 
 const CATS = {
-  restaurante: { label: "Restaurante",           emoji: "🍽️", bg: "#fef9c3", color: "#854d0e" },
-  cafeteria:   { label: "Cafeteria & doceria",   emoji: "☕", bg: "#ffedd5", color: "#9a3412" },
-  emporio:     { label: "Empório & mercearia",   emoji: "🛒", bg: "#dcfce7", color: "#15803d" },
-  loja:        { label: "Loja & compras",        emoji: "🛍️", bg: "#ede9fe", color: "#4c1d95" },
-  cultura:     { label: "Cultura & entret.",     emoji: "🎭", bg: "#fce7f3", color: "#831843" },
-  natureza:    { label: "Natureza & ar livre",   emoji: "🌿", bg: "#d1fae5", color: "#065f46" },
-  outro:       { label: "Outro",                 emoji: "📍", bg: "#f4f4f5", color: "#3f3f46" },
+  restaurante:{ label:"Restaurante",         emoji:"🍽️", bg:"#fef9c3", color:"#854d0e" },
+  cafeteria:  { label:"Cafeteria & doceria", emoji:"☕",  bg:"#ffedd5", color:"#9a3412" },
+  emporio:    { label:"Empório & mercearia", emoji:"🛒",  bg:"#dcfce7", color:"#15803d" },
+  loja:       { label:"Loja & compras",      emoji:"🛍️", bg:"#ede9fe", color:"#4c1d95" },
+  cultura:    { label:"Cultura & entret.",   emoji:"🎭",  bg:"#fce7f3", color:"#831843" },
+  natureza:   { label:"Natureza & ar livre", emoji:"🌿",  bg:"#d1fae5", color:"#065f46" },
+  outro:      { label:"Outro",               emoji:"📍",  bg:"#f4f4f5", color:"#3f3f46" },
 };
 
 let db = null;
 let places = {};
 let editingId = null;
-let unsubscribe = null;
+let formLinks = [];
+let formVisits = [];
 
 function init() {
-  if (typeof FIREBASE_CONFIG === "string") {
-    document.getElementById("setup-banner").style.display = "flex";
-    document.getElementById("sync-label").textContent = "não configurado";
-    document.getElementById("cards").innerHTML = `
-      <div class="empty">
-        <i class="ti ti-plug-connected-x"></i>
-        <p>Configure o Firebase para começar.<br>Veja o banner acima.</p>
-      </div>`;
-    renderStats();
-    return;
-  }
-
   firebase.initializeApp(FIREBASE_CONFIG);
   db = firebase.database();
 
-  const ref = db.ref("lugares");
-  const dot = document.getElementById("sync-dot");
-  const label = document.getElementById("sync-label");
-
   db.ref(".info/connected").on("value", snap => {
-    if (snap.val()) {
-      dot.classList.add("connected");
-      label.textContent = "sincronizado";
-    } else {
-      dot.classList.remove("connected");
-      label.textContent = "reconectando...";
-    }
+    const dot = document.getElementById("sync-dot");
+    const lbl = document.getElementById("sync-label");
+    if (snap.val()) { dot.classList.add("connected"); lbl.textContent = "sincronizado"; }
+    else { dot.classList.remove("connected"); lbl.textContent = "reconectando..."; }
   });
 
-  ref.on("value", snap => {
+  db.ref("lugares").on("value", snap => {
     places = snap.val() || {};
     render();
   });
+}
+
+function esc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function today() { return new Date().toISOString().split("T")[0]; }
+function fmtDate(iso) {
+  if (!iso) return "";
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+function linkIcon(url) {
+  if (/maps\.google|goo\.gl\/maps|maps\.app\.goo\.gl/.test(url)) return "ti-map-pin";
+  if (/instagram\.com/.test(url)) return "ti-brand-instagram";
+  if (/facebook\.com/.test(url)) return "ti-brand-facebook";
+  if (/wa\.me|whatsapp/.test(url)) return "ti-brand-whatsapp";
+  if (/tripadvisor/.test(url)) return "ti-star";
+  return "ti-link";
 }
 
 function render() {
@@ -369,45 +302,40 @@ function render() {
   const catF = document.getElementById("filter-cat").value;
   const statusF = document.getElementById("filter-status").value;
 
-  const all = Object.entries(places).map(([id, p]) => ({ id, ...p }));
-
+  const all = Object.entries(places).map(([id,p]) => ({id,...p}));
   const filtered = all.filter(p => {
-    if (q && !p.name.toLowerCase().includes(q) &&
-        !(p.city || "").toLowerCase().includes(q) &&
-        !(p.note || "").toLowerCase().includes(q)) return false;
+    if (q && !p.name?.toLowerCase().includes(q) && !(p.city||"").toLowerCase().includes(q) && !(p.note||"").toLowerCase().includes(q)) return false;
     if (catF && p.category !== catF) return false;
     if (statusF === "pending" && p.visited) return false;
     if (statusF === "visited" && !p.visited) return false;
     return true;
-  });
-
-  filtered.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }).sort((a,b) => (b.createdAt||0)-(a.createdAt||0));
 
   renderStats(all);
 
   const el = document.getElementById("cards");
   if (!filtered.length) {
-    el.innerHTML = `
-      <div class="empty">
-        <i class="ti ti-map-off"></i>
-        <p>${all.length ? "Nenhum lugar com esses filtros." : "Nenhum lugar salvo ainda.<br>Adicione o primeiro!"}</p>
-      </div>`;
+    el.innerHTML = `<div class="empty"><i class="ti ti-map-off"></i><p>${all.length ? "Nenhum lugar com esses filtros." : "Nenhum lugar salvo ainda.<br>Adicione o primeiro!"}</p></div>`;
     return;
   }
 
   el.innerHTML = filtered.map(p => {
     const c = CATS[p.category] || CATS.outro;
-    return `
-      <div class="card${p.visited ? " visited" : ""}" onclick="openEdit('${p.id}')">
+    const visits = p.visits || [];
+    const links = (p.links || []).filter(l => l);
+    const hasFooter = visits.length || links.length;
+
+    return `<div class="card${p.visited?" visited":""}" onclick="openEdit('${p.id}')">
+      <div class="card-body">
         <div class="card-top">
           <div class="card-name">${esc(p.name)}</div>
           <div class="card-actions" onclick="event.stopPropagation()">
-            <button class="icon-btn visited-btn${p.visited ? " active" : ""}"
-              title="${p.visited ? "Desmarcar visitado" : "Marcar como visitado"}"
+            <button class="icon-btn visited-btn${p.visited?" active":""}"
+              title="${p.visited?"Desmarcar visitado":"Marcar como visitado"}"
               onclick="toggleVisited('${p.id}')">
-              <i class="ti ti-${p.visited ? "circle-check-filled" : "circle-check"}"></i>
+              <i class="ti ti-${p.visited?"circle-check-filled":"circle-check"}"></i>
             </button>
-            <button class="icon-btn" title="Excluir" onclick="confirmDelete('${p.id}', event)">
+            <button class="icon-btn" title="Excluir" onclick="confirmDelete('${p.id}',event)">
               <i class="ti ti-trash"></i>
             </button>
           </div>
@@ -417,80 +345,151 @@ function render() {
           ${p.city ? `<span class="card-city"><i class="ti ti-map-pin"></i>${esc(p.city)}</span>` : ""}
         </div>
         ${p.note ? `<div class="card-note">${esc(p.note)}</div>` : ""}
-        ${p.visited ? `<div class="visited-label"><i class="ti ti-check" style="font-size:13px"></i> Já visitei</div>` : ""}
-      </div>`;
+        ${hasFooter ? `<div class="card-footer">
+          <div class="card-visits">
+            ${visits.length ? `<i class="ti ti-calendar-check" style="font-size:13px"></i>${visits.length} visita${visits.length>1?"s":""} · última ${fmtDate(visits[0])}` : ""}
+          </div>
+          <div class="card-links" onclick="event.stopPropagation()">
+            ${links.map(url => `<a href="${esc(url)}" target="_blank" class="card-link" title="${esc(url)}"><i class="ti ${linkIcon(url)}"></i></a>`).join("")}
+          </div>
+        </div>` : ""}
+      </div>
+    </div>`;
   }).join("");
 }
 
 function renderStats(all) {
-  if (!all) all = Object.values(places);
   const total = all.length;
   const visited = all.filter(p => p.visited).length;
   const catCounts = {};
-  all.forEach(p => { catCounts[p.category] = (catCounts[p.category] || 0) + 1; });
-  const top = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
-
+  all.forEach(p => { catCounts[p.category] = (catCounts[p.category]||0)+1; });
+  const top = Object.entries(catCounts).sort((a,b) => b[1]-a[1])[0];
   document.getElementById("stats").innerHTML = `
     <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">lugares salvos</div></div>
     <div class="stat"><div class="stat-num">${visited}</div><div class="stat-label">já visitei</div></div>
-    <div class="stat"><div class="stat-num">${total - visited}</div><div class="stat-label">quero visitar</div></div>
-    <div class="stat"><div class="stat-num">${top ? CATS[top[0]].emoji : "—"}</div><div class="stat-label">${top ? CATS[top[0]].label + " (" + top[1] + ")" : "nenhuma ainda"}</div></div>`;
-}
-
-function esc(s) {
-  return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    <div class="stat"><div class="stat-num">${total-visited}</div><div class="stat-label">quero visitar</div></div>
+    <div class="stat"><div class="stat-num">${top?CATS[top[0]].emoji:"—"}</div><div class="stat-label">${top?CATS[top[0]].label+" ("+top[1]+")":"nenhuma ainda"}</div></div>`;
 }
 
 function openModal(id) {
   editingId = id || null;
   const p = id ? places[id] : null;
+
   document.getElementById("modal-title").textContent = p ? "Editar lugar" : "Novo lugar";
-  document.getElementById("f-name").value = p ? (p.name || "") : "";
-  document.getElementById("f-city").value = p ? (p.city || "") : "Jundiaí";
-  document.getElementById("f-cat").value = p ? (p.category || "outro") : "restaurante";
-  document.getElementById("f-note").value = p ? (p.note || "") : "";
+  document.getElementById("f-name").value = p?.name || "";
+  document.getElementById("f-city").value = p?.city ?? "Jundiaí";
+  document.getElementById("f-cat").value = p?.category || "restaurante";
+  document.getElementById("f-note").value = p?.note || "";
+
+  formLinks = [...(p?.links||[]).filter(l=>l)];
+  if (!formLinks.length) formLinks = [""];
+  renderLinks();
+
+  formVisits = [...(p?.visits||[])];
+  document.getElementById("visits-section").style.display = id ? "block" : "none";
+  document.getElementById("f-visit-date").value = today();
+  renderVisits();
+
   document.getElementById("modal-footer").innerHTML = `
-    ${p ? `<button class="btn btn-danger" onclick="confirmDelete('${id}', null, true)"><i class="ti ti-trash" style="font-size:14px;vertical-align:-1px;margin-right:4px"></i>Excluir</button>` : ""}
+    ${p ? `<button class="btn btn-danger" onclick="confirmDelete('${id}',null,true)"><i class="ti ti-trash" style="font-size:13px;margin-right:4px;vertical-align:-1px"></i>Excluir</button>` : ""}
     <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-    <button class="btn btn-primary" onclick="savePlace()">Salvar</button>`;
+    <button class="btn btn-primary" id="save-btn" onclick="savePlace()">Salvar</button>`;
+
   document.getElementById("modal").style.display = "flex";
-  setTimeout(() => document.getElementById("f-name").focus(), 50);
+  setTimeout(() => document.getElementById("f-name").focus(), 60);
 }
 
 function openEdit(id) { openModal(id); }
+function closeModal() { document.getElementById("modal").style.display = "none"; editingId = null; }
 
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-  editingId = null;
+function renderLinks() {
+  const el = document.getElementById("links-list");
+  el.innerHTML = formLinks.map((url,i) => `
+    <div class="link-row">
+      <span class="link-icon"><i class="ti ${linkIcon(url)}"></i></span>
+      <input type="url" value="${esc(url)}" placeholder="https://maps.google.com/..."
+        oninput="formLinks[${i}]=this.value; this.parentElement.querySelector('.link-icon i').className='ti '+linkIcon(this.value)">
+      <button class="icon-btn" onclick="removeLink(${i})"><i class="ti ti-x" style="font-size:14px"></i></button>
+    </div>`).join("");
+  document.getElementById("btn-add-link").style.display = formLinks.length >= 5 ? "none" : "block";
 }
+
+function addLinkField() {
+  if (formLinks.length >= 5) return;
+  formLinks.push(""); renderLinks();
+  const inputs = document.getElementById("links-list").querySelectorAll("input");
+  if (inputs.length) inputs[inputs.length-1].focus();
+}
+
+function removeLink(i) { formLinks.splice(i,1); renderLinks(); }
+
+function renderVisits() {
+  const el = document.getElementById("visits-list");
+  if (!formVisits.length) {
+    el.innerHTML = `<p class="no-visits">Nenhuma visita registrada ainda.</p>`; return;
+  }
+  el.innerHTML = formVisits.map((d,i) => `
+    <div class="visit-entry">
+      <span><i class="ti ti-calendar" style="font-size:14px"></i>${fmtDate(d)}</span>
+      <button onclick="removeVisit(${i})"><i class="ti ti-x"></i></button>
+    </div>`).join("");
+}
+
+function addVisitToForm() {
+  const d = document.getElementById("f-visit-date").value;
+  if (!d) return;
+  if (!formVisits.includes(d)) { formVisits.unshift(d); formVisits.sort().reverse(); renderVisits(); }
+}
+
+function removeVisit(i) { formVisits.splice(i,1); renderVisits(); }
 
 async function savePlace() {
   const name = document.getElementById("f-name").value.trim();
   if (!name) { document.getElementById("f-name").focus(); return; }
+  if (!db) return;
 
-  if (!db) { alert("Configure o Firebase primeiro."); return; }
+  const btn = document.getElementById("save-btn");
+  btn.textContent = "Salvando..."; btn.disabled = true;
 
-  const data = {
-    name,
-    city: document.getElementById("f-city").value.trim(),
-    category: document.getElementById("f-cat").value,
-    note: document.getElementById("f-note").value.trim(),
-  };
+  try {
+    const data = {
+      name,
+      city: document.getElementById("f-city").value.trim(),
+      category: document.getElementById("f-cat").value,
+      note: document.getElementById("f-note").value.trim(),
+      links: formLinks.filter(l => l.trim()),
+      visits: formVisits,
+    };
 
-  if (editingId) {
-    await db.ref("lugares/" + editingId).update(data);
-  } else {
-    data.visited = false;
-    data.createdAt = Date.now();
-    await db.ref("lugares").push(data);
+    if (editingId) {
+      data.visited = places[editingId]?.visited || false;
+      data.createdAt = places[editingId]?.createdAt || Date.now();
+      await db.ref("lugares/" + editingId).update(data);
+    } else {
+      data.visited = false;
+      data.createdAt = Date.now();
+      await db.ref("lugares").push(data);
+    }
+    closeModal();
+  } catch(e) {
+    console.error(e);
+    alert("Erro ao salvar: " + e.message);
+    btn.textContent = "Salvar"; btn.disabled = false;
   }
-  closeModal();
 }
 
 async function toggleVisited(id) {
   if (!db) return;
-  const p = places[id];
-  if (p) await db.ref("lugares/" + id).update({ visited: !p.visited });
+  const p = places[id]; if (!p) return;
+  if (!p.visited) {
+    const visits = [...(p.visits||[])];
+    const t = today();
+    if (!visits.includes(t)) visits.unshift(t);
+    visits.sort().reverse();
+    await db.ref("lugares/" + id).update({ visited: true, visits });
+  } else {
+    await db.ref("lugares/" + id).update({ visited: false });
+  }
 }
 
 function confirmDelete(id, event, fromModal) {
